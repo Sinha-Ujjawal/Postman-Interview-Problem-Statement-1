@@ -20,4 +20,10 @@ python ./run.py
 
 6. The database should be populated with the products info (see dabaase schema [here](#database-schema))
 
+## Flow Diagram
+![](./flow_diagram.png)
+
 ## Database Schema
+You can table details as code [here](./db/tables.py).
+
+![](./db_schema.png)
