@@ -36,3 +36,16 @@ dwh_products = sa.Table(
     sa.Column("updated_at", sa.TIMESTAMP, server_onupdate=FetchedValue()),
     sa.UniqueConstraint("sku_id", "name_id", name="uk_sku_id__name_id"),
 )
+
+dwh_by_name_no_of_products = sa.Table(
+    "by_name_no_of_products",
+    metadata,
+    sa.Column(
+        "name_id",
+        sa.Integer,
+        sa.ForeignKey("names.id"),
+        nullable=False,
+        primary_key=True,
+    ),
+    sa.Column("no_of_products", sa.Integer, nullable=False),
+)

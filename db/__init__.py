@@ -1,8 +1,14 @@
 from typing import Callable, Optional
 import sqlalchemy as sa
 from sqlalchemy.dialects import mysql
-from db_helpers import ensure_tables, DBCreds, load_csv_to_table
-from .tables import stg_products, dwh_names, dwh_products, dwh_skus
+from db_helpers import ensure_tables, DBCreds, load_csv_to_table, truncate_table
+from .tables import (
+    stg_products,
+    dwh_names,
+    dwh_products,
+    dwh_skus,
+    dwh_by_name_no_of_products,
+)
 
 MYSQL_ENGINE = "mysql+mysqldb"
 
@@ -94,3 +100,24 @@ def update_products_table(db_creds: DBCreds):
 
     with db_engine.begin() as conn:
         conn.execute(do_update_stmt)
+
+
+def update_by_name_no_of_products_table(db_creds: DBCreds):
+    db_engine = db_creds.create_db_connection(MYSQL_ENGINE)
+    ensure_tables([dwh_products, dwh_by_name_no_of_products], db_engine)
+
+    insert_stmt = sa.insert(dwh_by_name_no_of_products).from_select(
+        ["name_id", "no_of_products"],
+        sa.select(
+            [
+                dwh_products.columns["name_id"],
+                sa.func.count(sa.distinct(dwh_products.columns["sku_id"])).label(
+                    "no_of_products"
+                ),
+            ]
+        ).group_by(dwh_products.columns["name_id"]),
+    )
+
+    with db_engine.begin() as conn:
+        truncate_table(dwh_by_name_no_of_products, conn)
+        conn.execute(insert_stmt)

@@ -10,6 +10,7 @@ from db import (
     update_names_table,
     update_skus_table,
     update_products_table,
+    update_by_name_no_of_products_table,
 )
 
 
@@ -46,6 +47,11 @@ def update_products_table_taskfn(db_creds: DBCreds):
     update_products_table(db_creds)
 
 
+@task(retry_delay=timedelta(minutes=3), max_retries=3)
+def update_by_name_no_of_products_table_taskfn(db_creds: DBCreds):
+    update_by_name_no_of_products_table(db_creds)
+
+
 ##
 
 
@@ -78,5 +84,12 @@ def create_flow(*, flow_params: FlowParameters, flow_name: str) -> Flow:
         load_csv_to_stg_products_task.set_downstream(update_products_table_task)
         update_skus_table_task.set_downstream(update_products_table_task)
         update_names_table_task.set_downstream(update_products_table_task)
+
+        update_by_name_no_of_products_table_task = (
+            update_by_name_no_of_products_table_taskfn(flow_params.db_creds)
+        )
+        update_products_table_task.set_downstream(
+            update_by_name_no_of_products_table_task
+        )
 
     return flow
