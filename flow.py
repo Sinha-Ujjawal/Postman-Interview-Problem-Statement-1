@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from datetime import timedelta
+import logging
 from logging import Logger
 import prefect
 from prefect import Flow, task
@@ -12,6 +13,29 @@ from db import (
     update_products_table,
     update_by_name_no_of_products_table,
 )
+
+# configuring sqlalchemy logger
+sqlalchemy_logger = logging.getLogger("sqlalchemy.engine")
+sqlalchemy_logger.setLevel(logging.INFO)
+
+# remove existing handlers
+for handler in sqlalchemy_logger.handlers:
+    sqlalchemy_logger.removeHandler(handler)
+
+sqlalchemy_logger.propagate = False
+# now if you use logger it will not log to console.
+
+# create file handler that logs debug and higher level messages
+fh = logging.FileHandler("sqlalchemy_core.log", mode="w")
+fh.setLevel(logging.DEBUG)
+
+# create formatter and add it to the handlers
+formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s | %(message)s")
+fh.setFormatter(formatter)
+
+# add the handlers to logger
+sqlalchemy_logger.addHandler(fh)
+##
 
 
 # tasks
