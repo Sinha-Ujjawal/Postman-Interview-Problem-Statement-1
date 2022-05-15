@@ -55,3 +55,32 @@ skus | 466,693
 names | 222,024
 products | 499,994
 by_name_no_of_products | 222,024
+
+Query to get row counts-
+
+```sql
+SELECT
+	'stg_products' table_name,
+	COUNT(1) count
+FROM products.stg_products
+UNION
+SELECT
+	'skus' table_name,
+	COUNT(1) count
+FROM products.skus
+UNION
+SELECT
+	'names' table_name,
+	COUNT(1) count
+FROM products.names
+UNION
+SELECT
+	'products' table_name,
+	COUNT(1) count
+FROM products.products
+UNION
+SELECT
+	'by_name_no_of_products' table_name,
+	COUNT(1) count
+FROM products.by_name_no_of_products ;
+```
