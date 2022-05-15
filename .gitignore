@@ -179,6 +179,3 @@ cython_debug/
 
 # vscode
 .vscode
-
-# products.csv
-./data/products.csv
