@@ -36,6 +36,22 @@ The following diagram shows roughly what tasks are running in the script. I have
 ![](./flow_diagram.png)
 
 ## Database Schema
-You can table details as code [here](./db/tables.py).
+You can see table details as code [here](./db/tables.py).
 
 ![](./db_schema.png)
+
+## Points to achieve
+- [x] Your code should follow concept of OOPS
+- [x] Support for regular non-blocking parallel ingestion of the given file into a table. Consider thinking about the scale of what should happen if the file is to be processed in 2 mins.
+- [x] Support for updating existing products in the table based on `sku` as the primary key. (Yes, we know about the kind of data in the file. You need to find a workaround for it)
+- [x] All product details are to be ingested into a single table
+- [x] An aggregated table on above rows with `name` and `no. of products` as the columns
+
+## Table Row Counts
+| table_name | counts |
+| ---------- | ------ |
+stg_products | 500,000
+skus | 466,693
+names | 222,024
+products | 499,994
+by_name_no_of_products | 222,024
