@@ -32,8 +32,8 @@ def load_csv_to_stg_products(
     )
 
 
-def update_skus_table(db_creds: DBCreds):
-    db_engine = db_creds.create_db_connection(MYSQL_ENGINE)
+def update_skus_table(db_creds: DBCreds, **db_connection_kwargs):
+    db_engine = db_creds.create_db_connection(MYSQL_ENGINE, **db_connection_kwargs)
     ensure_tables([stg_products, dwh_skus], db_engine)
 
     insert_stmt = mysql.insert(dwh_skus).from_select(
@@ -48,8 +48,8 @@ def update_skus_table(db_creds: DBCreds):
         conn.execute(do_update_stmt)
 
 
-def update_names_table(db_creds: DBCreds):
-    db_engine = db_creds.create_db_connection(MYSQL_ENGINE)
+def update_names_table(db_creds: DBCreds, **db_connection_kwargs):
+    db_engine = db_creds.create_db_connection(MYSQL_ENGINE, **db_connection_kwargs)
     ensure_tables([stg_products, dwh_names], db_engine)
 
     insert_stmt = mysql.insert(dwh_names).from_select(
@@ -64,8 +64,8 @@ def update_names_table(db_creds: DBCreds):
         conn.execute(do_update_stmt)
 
 
-def update_products_table(db_creds: DBCreds):
-    db_engine = db_creds.create_db_connection(MYSQL_ENGINE)
+def update_products_table(db_creds: DBCreds, **db_connection_kwargs):
+    db_engine = db_creds.create_db_connection(MYSQL_ENGINE, **db_connection_kwargs)
     ensure_tables([stg_products, dwh_skus, dwh_names, dwh_products], db_engine)
 
     insert_stmt = mysql.insert(dwh_products).from_select(
@@ -102,8 +102,8 @@ def update_products_table(db_creds: DBCreds):
         conn.execute(do_update_stmt)
 
 
-def update_by_name_no_of_products_table(db_creds: DBCreds):
-    db_engine = db_creds.create_db_connection(MYSQL_ENGINE)
+def update_by_name_no_of_products_table(db_creds: DBCreds, **db_connection_kwargs):
+    db_engine = db_creds.create_db_connection(MYSQL_ENGINE, **db_connection_kwargs)
     ensure_tables([dwh_products, dwh_by_name_no_of_products], db_engine)
 
     insert_stmt = sa.insert(dwh_by_name_no_of_products).from_select(
