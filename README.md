@@ -18,7 +18,7 @@ python -m pip install -r requirements.txt
 python ./run.py
 ```
 
-6. The database should be populated with the products info (see dabaase schema [here](#database-schema))
+6. The database should be populated with the products info (see database schema [here](#database-schema))
 
 ## Flow Diagram
 ![](./flow_diagram.png)
