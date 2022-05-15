@@ -89,7 +89,6 @@ def update_products_table(db_creds: DBCreds, **db_connection_kwargs):
                     onclause=stg_products.columns["name"] == dwh_names.columns["name"],
                 )
             )
-            .order_by(dwh_skus.columns["id"], dwh_names.columns["id"])
         ),
     )
 
